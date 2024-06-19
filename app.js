@@ -1,4 +1,5 @@
 const express = require('express');
+const routes = require('./routers')
 const app = express();
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
@@ -16,17 +17,8 @@ app.set('layout', 'layouts/main');
 // Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Home route
-app.get('/', (req, res) => {
-    res.render('index', { title: 'Home' });
-});
+app.use('/', routes);
 
-// About route
-app.get('/about', (req, res) => {
-    res.render('about', { title: 'About' });
-});
-
-// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
