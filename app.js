@@ -4,6 +4,12 @@ const app = express();
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 
+// Parse JSON bodies
+app.use(express.json());
+
+// Parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
+
 // Set view engine to EJS
 app.set('view engine', 'ejs');
 

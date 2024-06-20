@@ -18,33 +18,33 @@
       <h3 class="vr">Call Us: +62 812-3456-789</h3>
           <div class="row justify-content-center">
               <div class="col-md-10 ftco-animate">
-                  <form action="#" class="appointment-form">
+                  <form action="/reservation/add" method="POST" class="appointment-form">
               <div class="row">
                 <div class="col-sm-6">
                   <div class="form-group">
-                        <input type="text" class="form-control" id="appointment_name" placeholder="Name">
+                        <input type="text" class="form-control" id="appointment_name" placeholder="Name" name="name">
                       </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                        <input type="text" class="form-control" id="appointment_phone" placeholder="Phone Number">
+                        <input type="number" class="form-control" id="appointment_phone" placeholder="Phone Number" name="phone">
                       </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="text" class="form-control appointment_date" placeholder="Date">
+                    <input type="text" class="form-control appointment_date" placeholder="Date" name="date">
                   </div>    
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="text" class="form-control appointment_time" placeholder="Time">
+                    <input type="text" class="form-control appointment_time" placeholder="Time" name="time">
                   </div>
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
                         <div class="select-wrap">
                     <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-                    <select name="" id="" class="form-control">
+                    <select name="service" id="" class="form-control">
                         <option value="">Haircuts & Styling</option>
                         <option value="">Facial Treatments</option>
                       <option value="">Manicure & Pedicure</option>
