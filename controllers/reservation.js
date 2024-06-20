@@ -1,4 +1,4 @@
-const { Reservation, sequelize } = require('../models'); // Ensure correct path
+const { Reservation, sequelize } = require('../models'); 
 
 class ReservationController {
     static async create(req, res, next){
@@ -10,7 +10,7 @@ class ReservationController {
                 throw new Error("Invalid phone number");
             }
 
-            const reservation = await Reservation.create({
+            await Reservation.create({
                 name,
                 phone: phone.toString(),
                 date,

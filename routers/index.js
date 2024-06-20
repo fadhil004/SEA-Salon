@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ReservationController = require('../controllers/reservation');
+const ReviewController = require('../controllers/review');
 
 
 
@@ -12,5 +13,7 @@ router.get('/reservation', (req,res) => {
 })
 
 router.post('/reservation/add', ReservationController.create)
+
+router.post('/review', ReviewController.create)
 
 module.exports = router

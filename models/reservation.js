@@ -14,11 +14,26 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Reservation.init({
-    name: DataTypes.STRING,
-    phone: DataTypes.STRING,
-    date: DataTypes.DATE,
-    time: DataTypes.STRING,
-    service: DataTypes.STRING
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    time: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    service: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
   }, {
     sequelize,
     modelName: 'Reservation',
