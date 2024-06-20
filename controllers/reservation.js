@@ -1,4 +1,4 @@
-const { Reservation, sequelize } = require('../models'); 
+const { Reservation } = require('../models'); 
 
 class ReservationController {
     static async create(req, res, next){

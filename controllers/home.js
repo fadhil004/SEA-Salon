@@ -10,7 +10,7 @@ class HomeController{
             });
             res.render('index', { reviews });
         } catch (err) {
-            res.render('error', { error: err.message });
+            res.render('error', { error: err.message });//wait for error.ejs
         }
     }
     

@@ -3,8 +3,13 @@ const router = express.Router();
 const ReservationController = require('../controllers/reservation');
 const ReviewController = require('../controllers/review');
 const HomeController = require('../controllers/home');
+const UserController = require('../controllers/user')
 
 router.get('/', HomeController.index)
+
+router.get('/register', UserController.register)
+router.get('/login', UserController.login)
+router.post('/register', UserController.create)
 
 router.get('/reservation', (req,res) => {
     res.render('reservation')
