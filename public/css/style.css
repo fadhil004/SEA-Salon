@@ -10056,3 +10056,8 @@ textarea.form-control {
     #submit-review {
       align-self: center;
     }
+
+    /* */
+    .checked {
+      color: orange;
+    }

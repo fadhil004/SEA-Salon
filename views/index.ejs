@@ -239,84 +239,26 @@
             <div class="py-md-5">
                 <div class="heading-section ftco-animate">
                     <span class="subheading">Testimony</span>
-                    <h2 class="mb-0">Happy Customer</h2>
+                    <h2 class="mb-0">What Our Customers Say</h2>
                   </div>
               <div class="carousel-testimony owl-carousel ftco-animate">
+                <% for (let i=0; i<reviews.length; i++ ) { %>
                 <div class="item">
                   <div class="testimony-wrap pb-4">
                     <div class="text">
-                      <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
+                      <p class="mb-2 mt-2"><%= `${reviews[i].comment}` %></p>
                     </div>
                     <div class="d-flex">
-                        <div class="user-img" style="background-image: url(images/stylist-1.jpg)">
-                        </div>
-                        <div class="pos ml-3">
-                            <p class="name">Jeff Nucci</p>
-                          <span class="position">Businessman</span>
+                        <div class="pos ">
+                            <p class="name"><%= `${reviews[i].name}` %></p>
+                            <% for (let j = 1; j <= 5; j++) { %>
+                              <span class="fa fa-star <%= j <= reviews[i].rating ? 'checked' : '' %>"></span>
+                            <% } %>
                         </div>
                       </div>
                   </div>
                 </div>
-                <div class="item">
-                  <div class="testimony-wrap pb-4">
-                    <div class="text">
-                      <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    </div>
-                    <div class="d-flex">
-                        <div class="user-img" style="background-image: url(images/stylist-2.jpg)">
-                        </div>
-                        <div class="pos ml-3">
-                            <p class="name">Jeff Nucci</p>
-                          <span class="position">Businessman</span>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="testimony-wrap pb-4">
-                    <div class="text">
-                      <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    </div>
-                    <div class="d-flex">
-                        <div class="user-img" style="background-image: url(images/stylist-3.jpg)">
-                        </div>
-                        <div class="pos ml-3">
-                            <p class="name">Jeff Nucci</p>
-                          <span class="position">Businessman</span>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="testimony-wrap pb-4">
-                    <div class="text">
-                      <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    </div>
-                    <div class="d-flex">
-                        <div class="user-img" style="background-image: url(images/stylist-4.jpg)">
-                        </div>
-                        <div class="pos ml-3">
-                            <p class="name">Jeff Nucci</p>
-                          <span class="position">Businessman</span>
-                        </div>
-                      </div>
-                  </div>
-                </div>
-                <div class="item">
-                  <div class="testimony-wrap pb-4">
-                    <div class="text">
-                      <p class="mb-4">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-                    </div>
-                    <div class="d-flex">
-                        <div class="user-img" style="background-image: url(images/stylist-5.jpg)">
-                        </div>
-                        <div class="pos ml-3">
-                            <p class="name">Jeff Nucci</p>
-                          <span class="position">Businessman</span>
-                        </div>
-                      </div>
-                  </div>
-                </div>
+                <% } %>
               </div>
               <div class="mt-3 ftco-animate">
                   <p><button id="review-add-btn" class="btn btn-primary btn-outline-primary">Leave us a review</button></p>
@@ -354,7 +296,7 @@
   
         <div class="fieldset">
           <label for="reviewComments">Comments</label>
-          <textarea name="reviewComments" id="reviewComments" cols="20" rows="5" required="" maxlength="125"></textarea>
+          <textarea name="reviewComments" id="reviewComments" cols="20" rows="5" required="" maxlength="200"></textarea>
         </div>
         <div class="fieldset right">
           <button id="submit-review-btn" type="submit">Save</button>
