@@ -1,5 +1,6 @@
 const express = require('express');
-const routes = require('./routers')
+const session = require('express-session');
+const routes = require('./routers');
 const app = express();
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
@@ -22,6 +23,13 @@ app.set('layout', 'layouts/main');
 
 // Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+    secret: 'kunci-inggris', 
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if using HTTPS
+}));
 
 app.use('/', routes);
 

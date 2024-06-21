@@ -6,7 +6,7 @@ class ReservationController {
             const { name, phone, date, time, service } = req.body;
             
             // Validation for phone number 
-            if (isNaN(phone) || phone.toString().length < 10) {
+            if (isNaN(phone) || phone.toString().length < 14) {
                 throw new Error("Invalid phone number");
             }
 
