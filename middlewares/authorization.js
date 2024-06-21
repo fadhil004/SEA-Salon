@@ -3,8 +3,6 @@ const { User } = require('../models');
 const authorization = async (req, res, next) => {
     try {
       const decodedId = req.decoded.id;
-      console.log("test API")
-      console.log(decodedId)
       const user = await User.findByPk(decodedId)
       if (user && user.role === 'admin') {
         next();

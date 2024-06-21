@@ -5,6 +5,9 @@
     class UserController {
         static async registerForm(req, res) {
             try {
+                if (req.session.token) {
+                    return res.redirect('/'); 
+                }
                 res.render('register', { layout: false, message: ''});
             } catch (err) {
                 res.render('error', { error: err.message });//wait for error.ejs
@@ -12,6 +15,9 @@
         }
         static async loginForm(req, res) {
             try {
+                if (req.session.token) {
+                    return res.redirect('/'); 
+                }
                 res.render('login', { layout: false, message: ''});
             } catch (err) {
                 res.render('error', { error: err.message });//wait for error.ejs
@@ -63,6 +69,11 @@
         }
         static async dashboard(req, res) {
             try {
+                const decodedId = req.decoded.id;
+                const user = await User.findByPk(decodedId)
+                if (user && user.role === 'admin') {
+                    return res.redirect('/');
+                }
                 res.render('dashboard', { user: req.decoded });
             } catch (err) {
                 res.render('error', { error: err.message });//wait for error.ejs

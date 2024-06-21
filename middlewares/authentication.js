@@ -10,8 +10,6 @@ const authentication = (req, res, next) => {
         console.log(token)
         let decode = jwt.verifyToken(token);
         req.decoded = decode;
-        console.log(decode)
-        console.log(req.decoded.id)
         next();
     } catch (err) {
         res.status(401).render('login', { layout:false, message: 'You should login first!' });
