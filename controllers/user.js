@@ -5,7 +5,7 @@
     class UserController {
         static async registerForm(req, res) {
             try {
-                res.render('register', { layout: false});
+                res.render('register', { layout: false, message: ''});
             } catch (err) {
                 res.render('error', { error: err.message });//wait for error.ejs
             }
@@ -32,7 +32,7 @@
                 res.redirect('/');
             } catch (err) {
                 console.error(err);
-                res.status(500).send({ error: err.message });
+                res.render('register', { layout: false, message: err.message });
             }
         }
         static async login(req, res, next) {

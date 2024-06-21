@@ -61,8 +61,13 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
     hooks: {
-      beforeCreate: function (User, op ,fn) {
-        User.password = hashPassword(User.password)
+      beforeCreate: async (User, op ,fn) => {
+        User.password = hashPassword(User.password);
+
+        const existingUser = await User.constructor.findOne({ where: { username: User.username } });
+        if (existingUser) {
+          throw new Error('Username already exists');
+        }
       }
     }
   });

@@ -24,6 +24,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		<h1>Sign Up</h1>
 		<div class="main-agileinfo">
 			<div class="agileits-top">
+				<% if (message) { %>
+                    <div class="error-message">
+                        <p><%= message %></p>
+                    </div>
+                <% } %>
 				<form action="/register" method="post">
 					<input class="text " type="text" name="username" placeholder="Username" required="" maxlength="15">
 					<input class="text mrg" type="text" name="fullname" placeholder="Full Name" required="" maxlength="30">
