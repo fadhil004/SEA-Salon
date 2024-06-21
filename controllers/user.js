@@ -49,7 +49,10 @@
                         username: user.username
                     };
                     let token = generateToken(payload);
-                    req.session.token = token; 
+                    req.session.token = token;
+                    if (user.role === 'admin'){
+                            res.redirect('/admin')
+                        } 
                     res.redirect('/dashboard');
                 } else {
                     res.render('login', { layout: false, message: 'Invalid username or password!' });
@@ -61,6 +64,13 @@
         static async dashboard(req, res) {
             try {
                 res.render('dashboard', { user: req.decoded });
+            } catch (err) {
+                res.render('error', { error: err.message });//wait for error.ejs
+            }
+        }
+        static async admin(req, res) {
+            try {
+                res.render('admin', { user: req.decoded });
             } catch (err) {
                 res.render('error', { error: err.message });//wait for error.ejs
             }

@@ -5,6 +5,7 @@ const ReviewController = require('../controllers/review');
 const HomeController = require('../controllers/home');
 const UserController = require('../controllers/user')
 const { authentication } = require('../middlewares/authentication');
+const { authorization } = require('../middlewares/authorization');
 
 router.get('/', HomeController.index)
 router.get('/logout', (req, res) => {
@@ -21,6 +22,7 @@ router.get('/login', UserController.loginForm)
 router.post('/register', UserController.create)
 router.post('/login', UserController.login)
 router.get('/dashboard', authentication, UserController.dashboard)
+router.get('/admin', authentication, authorization, UserController.admin)
 
 router.get('/reservation', (req,res) => {
     res.render('reservation')
