@@ -4,6 +4,7 @@ const routes = require('./routers');
 const app = express();
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
+const setUser = require('./middlewares/setUser');
 
 // Parse JSON bodies
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use(session({
     cookie: { secure: false } // Set to true if using HTTPS
 }));
 
+app.use(setUser);
 app.use('/', routes);
 
 const PORT = process.env.PORT || 3000;

@@ -14,13 +14,15 @@
             <li class="nav-item"><a href="/reservation" class="nav-link">Book Now</a></li>
             <li class="nav-item dropdown" id="userDropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span id="userNavText"><i class="fa-solid fa-user"></i> Account</span>
+                  <span id="userNavText"><i class="fa-solid fa-user"></i> <%= user ? user.username : 'Account' %></span>
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="/login"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#"><i class="fa-solid fa-table-columns"></i> Dashboard</a>
-                  <a class="dropdown-item" href="#"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                <% if (user) { %>
+                  <a class="dropdown-item" href="/dashboard"><i class="fa fa-table-columns"></i> Dashboard</a>
+                  <a class="dropdown-item" href="/logout"><i class="fa fa-right-from-bracket"></i> Logout</a>
+                <% } else { %>
+                  <a class="dropdown-item" href="/login"><i class="fa fa-right-to-bracket"></i> Login</a>
+                <% } %>
               </div>
           </li>
         </ul>
