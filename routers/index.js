@@ -25,7 +25,7 @@ router.get('/dashboard', authentication, UserController.dashboard)
 router.get('/admin', authentication, authorization, UserController.admin)
 
 router.get('/reservation', (req,res) => {
-    res.render('reservation')
+    res.render('reservation', {user: res.locals.user})
 })
 router.post('/reservation/add', ReservationController.create)
 

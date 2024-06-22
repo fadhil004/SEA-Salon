@@ -27,7 +27,7 @@
             try {
                 const { username, fullname, email, phone, password } = req.body;
                 
-                await User.create({
+                const user = await User.create({
                     username,
                     fullname,
                     email,
@@ -35,6 +35,13 @@
                     password
                 });
 
+                let payload = {
+                    id: user.id,
+                    username: user.username
+                };
+                let token = generateToken(payload);
+                req.session.token = token;
+    
                 res.redirect('/');
             } catch (err) {
                 console.error(err);
@@ -81,7 +88,7 @@
         }
         static async admin(req, res) {
             try {
-                res.render('admin', { user: req.decoded });
+                res.render('admin', { layout:false, user: req.decoded });
             } catch (err) {
                 res.render('error', { error: err.message });//wait for error.ejs
             }
