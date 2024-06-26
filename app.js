@@ -24,6 +24,10 @@ app.set('layout', 'layouts/main');
 
 // Middleware for serving static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use((req, res, next) => {
+    res.locals.currentUrl = req.originalUrl;
+    next();
+  });
 
 app.use(session({
     secret: 'kunci-inggris', 

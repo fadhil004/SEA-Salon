@@ -22,9 +22,9 @@
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
       <div class="sidebar-content">
         <ul class="nav nav-secondary">
-          <li class="nav-item active">
+          <li class="nav-item <%= currentUrl === '/admin' ? 'active' : '' %>">
             <a
-              href="#dashboard"
+              href="/admin"
               class="collapsed"
             >
               <i class="fas fa-home"></i>
@@ -32,17 +32,29 @@
             </a>
           </li>
           <li class="nav-item">
-            <a
-              href="#dashboard"
-              class="collapsed"
-            >
-              <i class="fas fa-map-marked-alt"></i>
-              <p>Manage Branch</p>
+            <a data-bs-toggle="collapse" href="#branch">
+              <i class="far fa-chart-bar"></i>
+              <p>Branch</p>
+              <span class="caret"></span>
             </a>
+            <div class="collapse <%= currentUrl.startsWith('/admin/branch') ? 'show' : '' %>" id="branch">
+              <ul class="nav nav-collapse">
+                <li class="<%= currentUrl === '/admin/branch' ? 'active' : '' %>">
+                  <a href="/admin/branch">
+                    <span class="sub-item">Manage Branch</span>
+                  </a>
+                </li>
+                <li class="<%= currentUrl === '/admin/branch/add' ? 'active' : '' %>">
+                  <a href="/admin/branch/add">
+                    <span class="sub-item">Add Branch</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </li>
-          <li class="nav-item">
+          <li class="nav-item <%= currentUrl === '/admin/service' ? 'active' : '' %>">
             <a
-              href="#dashboard"
+              href="/admin/service"
               class="collapsed"
             >
               <i class="fas fa-plus"></i>

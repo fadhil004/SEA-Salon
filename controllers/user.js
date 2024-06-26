@@ -79,7 +79,7 @@
                 const decodedId = req.decoded.id;
                 const user = await User.findByPk(decodedId)
                 if (user && user.role === 'admin') {
-                    return res.redirect('/');
+                    return res.redirect('/admin');
                 }
                 res.render('dashboard', { user: req.decoded });
             } catch (err) {

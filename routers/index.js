@@ -4,6 +4,7 @@ const ReservationController = require('../controllers/reservation');
 const ReviewController = require('../controllers/review');
 const HomeController = require('../controllers/home');
 const UserController = require('../controllers/user')
+const DashboardController = require('../controllers/dashboard')
 const { authentication } = require('../middlewares/authentication');
 const { authorization } = require('../middlewares/authorization');
 
@@ -24,10 +25,13 @@ router.post('/login', UserController.login)
 router.get('/dashboard', authentication, UserController.dashboard)
 router.get('/admin', authentication, authorization, UserController.admin)
 
-router.get('/reservation', (req,res) => {
-    res.render('reservation', {user: res.locals.user})
-})
-router.post('/reservation/add', ReservationController.create)
+router.get('/admin/service', authentication,authorization, DashboardController.manageService)
+router.get('/admin/branch', authentication,authorization, DashboardController.manageBranch)
+router.get('/admin/branch/add', authentication,authorization, DashboardController.addBranch)
+
+router.get('/reservation', authentication, ReservationController.show)
+router.post('/reservation/add', authentication, ReservationController.create)
+router.get('/:branchId/services', authentication, ReservationController.getServices)
 
 router.post('/review', ReviewController.create)
 

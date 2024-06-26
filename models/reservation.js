@@ -4,35 +4,52 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Reservation extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      Reservation.belongsTo(models.Branch, { foreignKey: 'branchId' });
+      Reservation.belongsTo(models.Service, { foreignKey: 'serviceId' });
+      Reservation.belongsTo(models.User, { foreignKey: 'userId' });
     }
   }
   Reservation.init({
     name: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
     phone: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
     date: {
-        type: DataTypes.DATE,
-        allowNull: false
+      type: DataTypes.DATE,
+      allowNull: false
     },
     time: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
-    service: {
-        type: DataTypes.STRING,
-        allowNull: false
+    serviceId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Services', 
+        key: 'id', 
+      }
+    },
+    branchId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Branches',
+        key: 'id',
+      }
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'Users',
+        key: 'id',
+      }
     },
   }, {
     sequelize,
