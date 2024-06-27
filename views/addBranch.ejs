@@ -13,7 +13,92 @@
         <%- include('./dashboard/header') %>
 
         <div class="container">
-          addBranch
+          <div class="page-inner">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">Create New Branch</div>
+                  </div>
+                  <div class="card-body">
+                    <form action="/branch/create" method="POST">
+                    <div class="row">
+                      <div class="col-md-12 col-lg-12">
+                        <div class="form-floating form-floating-custom mb-3">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="floatingInput"
+                            placeholder="branch name"
+                            name="name"
+                            required
+                          />
+                          <label for="floatingInput">Branch Name</label>
+                        </div>
+                        <div class="form-floating form-floating-custom mb-3">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="floatingInput"
+                            placeholder="branch location"
+                            name="location"
+                            required
+                          />
+                          <label for="floatingInput">Location</label>
+                        </div>
+                        <div class="form-group">
+                          <label for="exampleFormControlSelect2"
+                            >Select services</label
+                          >
+                          <select
+                            multiple="multiple"
+                            class="form-select"
+                            id="selectFloatingLabel"
+                            name="services[]"
+                          >
+                          <% services.forEach(service => { %>
+                            <option value="<%= service.id %>"><%= service.nameService %></option>
+                          <% }) %>
+                          </select>
+                          <small class="form-text text-muted"
+                            >*You can choose multiple services.</small
+                          >
+                        </div>
+                        <div class="form-floating form-floating-custom mb-3">
+                          <input
+                            type="time"
+                            class="form-control"
+                            id="floatingInput"
+                            placeholder="opening time"
+                            name="openingTime"
+                            required
+                          />
+                          <label for="floatingInput">Opening Time</label>
+                        </div>
+                        <div class="form-floating form-floating-custom mb-3">
+                          <input
+                            type="time"
+                            class="form-control"
+                            id="floatingInput"
+                            placeholder="closing time"
+                            name="closingTime"
+                            required
+                          />
+                          <label for="floatingInput">Closing Time</label>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="card-action">
+                      <button class="btn btn-success" type="submit">Submit</button>
+                    </div>
+                  </form>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
           </div>
         </div>
 
@@ -21,5 +106,14 @@
 
     </div>
     <%- include('./dashboard/foot') %>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $('#selectFloatingLabel').select2({
+          placeholder: "Select Services"
+        });
+      });
+    </script>
   </body>
 </html>

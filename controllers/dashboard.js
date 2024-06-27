@@ -1,4 +1,4 @@
-const { Service } = require('../models');
+const { Branch, Service } = require('../models');
 
 class DashboardController{
     static async manageService(req, res) {
@@ -17,7 +17,8 @@ class DashboardController{
     }
     static async addBranch(req, res) {
         try {
-            res.render('addBranch', { layout:false, user: req.decoded });
+            const services = await Service.findAll();
+            res.render('addBranch', { layout:false, user: req.decoded, services });
         } catch (err) {
             res.render('error', { error: err.message });//wait for error.ejs
         }
@@ -38,6 +39,26 @@ class DashboardController{
             res.status(500).send('Internal Server Error');
         }
     }
+    static async createBranch(req, res) {
+        try {
+          const { name, location, openingTime, closingTime, services } = req.body;
+          const branch = await Branch.create({
+            name,
+            location,
+            openingTime,
+            closingTime
+          });
+    
+          if (services && services.length > 0) {
+            await branch.setServices(services);
+          }
+    
+          res.redirect('/admin'); 
+        } catch (error) {
+          console.error('Error creating branch:', error);
+          res.status(500).send('Internal Server Error');
+        }
+      }
 }
 
 module.exports = DashboardController
