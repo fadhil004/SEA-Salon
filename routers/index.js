@@ -28,6 +28,7 @@ router.get('/admin', authentication, authorization, UserController.admin)
 router.get('/admin/service', authentication,authorization, DashboardController.manageService)
 router.get('/admin/branch', authentication,authorization, DashboardController.manageBranch)
 router.get('/admin/branch/add', authentication,authorization, DashboardController.addBranch)
+router.post('/services/create', authentication, authorization, DashboardController.createService)
 
 router.get('/reservation', authentication, ReservationController.show)
 router.post('/reservation/add', authentication, ReservationController.create)

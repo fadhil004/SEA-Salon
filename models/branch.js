@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       Branch.belongsToMany(models.Service, {
         through: 'BranchService',
         foreignKey: 'branchId',
+        otherKey: 'serviceId',
         as: 'services'
       });
     }

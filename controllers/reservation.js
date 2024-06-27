@@ -45,16 +45,18 @@ class ReservationController {
     static async getServices(req, res){
         try {
             const branchId = req.params.branchId;
-            const services = await Service.findAll({
-                where: { BranchId: branchId }, 
+            const branch = await Branch.findByPk(branchId, {
                 include: [{
-                    model: Branch,
-                    as: 'branches',
-                    where: { id: branchId },
-                    through: { attributes: [] } 
+                    model: Service,
+                    as: 'services'
                 }]
             });
-            res.json(services);
+            
+            if (!branch) {
+                return res.status(404).json({ error: 'Branch not found' });
+            }
+    
+            res.json(branch.services);
         } catch (error) {
             console.error('Error fetching services:', error);
             res.status(500).json({ error: 'Failed to fetch services' });
