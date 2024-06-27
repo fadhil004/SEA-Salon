@@ -1,4 +1,4 @@
-const { Branch, Service } = require('../models');
+const { Branch, Service, BranchService } = require('../models');
 
 class DashboardController{
     static async manageService(req, res) {
@@ -10,12 +10,17 @@ class DashboardController{
     }
     static async manageBranch(req, res) {
         try {
-            const branches = await Branch.findAll({
-                include: [{ model: Service, as: 'services' }] // Include associated services
+            const branches = await Branch.findAll();
+            const services = await Service.findAll();
+            const branchServices = await BranchService.findAll({
+            include: [Branch, Service],
             });
-            res.render('branch', { layout:false, user: req.decoded, branches });
+
+            res.render('branch', { layout:false, user: req.decoded, branches,
+                services,
+                branchServices, });
         } catch (err) {
-            res.render('error', { error: err.message });//wait for error.ejs
+            res.status(500).send(err.message);
         }
     }
     static async addBranch(req, res) {
@@ -62,51 +67,44 @@ class DashboardController{
           res.status(500).send('Internal Server Error');
         }
     }
-    static async getServices(req, res) {
+    static async addServiceToBranch(req, res){
+        const { branchId, serviceId } = req.body;
+
         try {
-            const services = await Service.findAll();
-            res.json(services);
-        } catch (error) {
-            console.error('Error fetching services:', error);
-            res.status(500).json({ error: 'Failed to fetch services' });
-        }
-    }
-    static async getServicesByBranchId(req, res) {
-        try {
-            const branchId = req.params.branchId;
-            
-            const services = await Service.findAll({
-              include: [{
-                model: Branch,
-                where: { id: branchId }
-              }]
-            });
-        
-            res.json(services);
-          } catch (error) {
-            console.error('Error fetching branch services:', error);
-            res.status(500).json({ error: 'Failed to fetch branch services' });
-          }
-        
-    }
-    static async removeServicesFromBranch(req, res) {
-        const { branchId } = req.params;
-        const { services } = req.body;
-        try {
+            console.log(branchId)
+            console.log(serviceId)
+            console.log("=====================================")
             const branch = await Branch.findByPk(branchId);
-            if (!branch) {
-            return res.status(404).json({ error: 'Branch not found' });
+            const service = await Service.findByPk(serviceId);
+
+            if (!branch || !service) {
+            return res.status(404).json({ message: 'Branch or service not found' });
             }
 
-            // Menghapus layanan dari cabang
-            await branch.removeServices(services);
+            await branch.addService(service);
 
-            res.status(200).json({ message: 'Services removed from branch successfully' });
-        } catch (error) {
-            console.error('Error removing services from branch:', error);
-            res.status(500).json({ error: 'Failed to remove services from branch' });
+            res.redirect('/admin/branch');
+        } catch (err) {
+            res.status(500).json({ error: err.message });
         }
     }
+    static async removeServiceFromBranch(req, res){
+        const { branchId, serviceId } = req.params;
+
+        try {
+            await BranchService.destroy({
+                where: {
+                  branchId: branchId,
+                  serviceId: serviceId
+                }
+              });
+
+            res.redirect('/admin/branch');
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
 }
 
 module.exports = DashboardController

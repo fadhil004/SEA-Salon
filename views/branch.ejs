@@ -15,152 +15,95 @@
 
       <div class="container">
         <div class="page-inner">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-title">Manage Branch Services</div>
-                </div>
-                <div class="card-body">
-                  <form action="/branches/manage" method="POST">
-                    <div class="row">
-                      <div class="col-md-12 col-lg-12">
-                        <div class="form-floating form-floating-custom mb-3">
-                          <select
-                            class="form-select"
-                            id="branchSelect"
-                            name="branchId"
-                            required
-                          >
-                            <option value="" disabled selected>Select Branch</option>
-                            <% branches.forEach(branch => { %>
-                              <option value="<%= branch.id %>"><%= branch.name %></option>
-                            <% }) %>
-                          </select>
-                          <label for="branchSelect">Branch</label>
-                        </div>
-                        <div class="form-floating form-floating-custom mb-3">
-                          <select
-                            class="form-select"
-                            id="serviceSelect"
-                            name="services"
-                            multiple="multiple"
-                            required
-                          >
-                          </select>
-                          <label for="serviceSelect">Select Services</label>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-action">
-                      <button class="btn btn-success" type="submit">Add Services</button>
-                      <button class="btn btn-danger" id="removeServiceBtn" type="button">Remove Selected Services</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
+        <h2>Manage Branch Services</h2>
+        
+        <!-- Form to add service to branch -->
+        <form id="addServiceForm" method="POST" action="/branches/services/add">
+          <div class="form-group">
+            <label for="branchSelect">Select Branch:</label>
+            <select id="branchSelect" name="branchId" class="form-control">
+              <!-- Populate options dynamically from backend -->
+              <% branches.forEach(branch => { %>
+                <option value="<%= branch.id %>"><%= branch.name %></option>
+              <% }) %>
+            </select>
           </div>
-
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header">
-                  <div class="card-title">Existing Services in Branch</div>
-                </div>
-                <div class="card-body">
-                  <ul id="existingServicesList" class="list-group">
-                  </ul>
-                </div>
-              </div>
-            </div>
+          <div class="form-group">
+            <label for="serviceSelect">Select Service:</label>
+            <select id="serviceSelect" name="serviceId" class="form-control">
+              <!-- Populate options dynamically from backend -->
+              <% services.forEach(service => { %>
+                <option value="<%= service.id %>"><%= service.nameService %></option>
+              <% }) %>
+            </select>
           </div>
+          <button type="submit" class="ms-3 btn btn-primary">Add Service</button>
+        </form>
 
+        <!-- Table to display branch services with delete option -->
+        <div class="mt-4">
+          <h3>Branch Services List</h3>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Branch</th>
+                <th>Service</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Display existing branch services dynamically -->
+              <% branchServices.forEach(branchService => { %>
+                <tr>
+                  <td><%= branchService.Branch.name %></td>
+                  <td><%= branchService.Service.nameService %></td>
+                  <td>
+                   
+                      <button type="submit" class="btn btn-danger"><a href="/branches/services/remove/<%= branchService.branchId %>/<%= branchService.serviceId %>" style="text-decoration: none;color: #ffffff;">Remove</a></button>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
         </div>
+      </div>
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js" defer></script>
+  
+  <!-- Include scripts at the end for better performance -->
   <%- include('./dashboard/foot') %>
   
-  <script>
+  <!-- Additional script for Select2 initialization -->
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+  <!-- <script>
     $(document).ready(function() {
-      // Initialize Select2 on the select elements
-      $('#branchSelect').select2({
-        placeholder: "Select Branch"
-      });
+      // Initialize Select2 for branchSelect and serviceSelect
+      $('#branchSelect, #serviceSelect').select2();
 
-      $('#serviceSelect').select2({
-        placeholder: "Select Services"
-      });
+      // Handle form submission for adding service to branch
+      $('#addServiceForm').submit(function(event) {
+        event.preventDefault();
+        var branchId = $('#branchSelect').val();
+        var serviceId = $('#serviceSelect').val();
 
-      
-
-      $('#branchSelect').on('change', function() {
-        console.log("test")
-        const branchId = $(this).val();
-        console.log("test");
-        console.log('Branch selected:', $(this).val());
-
-        // Fetch available services
-        fetch(`/branches/${branchId}/services`)
-          .then(response => response.json())
-          .then(data => {
-            $('#existingServicesList').empty();
-            data.forEach(service => {
-              $('#existingServicesList').append(`<li class="list-group-item">${service.nameService}</li>`);
-            });
-          })
-          .catch(error => {
-            console.error('Error fetching branch services:', error);
-          });
-
-        // Fetch all services and populate the Select2 dropdown
-        fetch(`/services/all`)
-        console.log('Data services:', data)// test fetch
-          .then(response => response.json())
-          .then(data => {
-            $('#serviceSelect').empty();
-            data.forEach(service => {
-              const option = new Option(service.nameService, service.id, false, false);
-              $('#serviceSelect').append(option);
-            });
-
-            // Trigger Select2 to update the UI
-            $('#serviceSelect').trigger('change');
-          })
-          .catch(error => {
-            console.error('Error fetching services:', error);
-          });
-      });
-
-      $('#removeServiceBtn').on('click', function() {
-        console.log("test")
-        const branchId = $('#branchSelect').val();
-        const selectedServices = $('#serviceSelect').val();
-
-        if (!branchId || !selectedServices.length) {
-          alert('Please select a branch and at least one service to remove.');
-          return;
-        }
-
+        // Perform AJAX request to add service to branch
         $.ajax({
-          url: `/branches/${branchId}/remove-services`,
+          url: '/branches/services/add',
           method: 'POST',
-          data: { services: selectedServices },
+          data: { branchId: branchId, serviceId: serviceId },
           success: function(response) {
-            alert('Services removed successfully.');
-            // Refresh existing services list
-            $('#branchSelect').trigger('change');
+            // Reload the page or update the UI as needed
+            window.location.reload();
           },
-          error: function(error) {
-            console.error('Error removing services:', error);
-            alert('Failed to remove services.');
+          error: function(err) {
+            console.error('Error adding service to branch:', err);
           }
         });
       });
+
+      
     });
-  </script>
+  </script> -->
 </body>
 </html>

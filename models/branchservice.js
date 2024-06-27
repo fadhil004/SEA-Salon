@@ -5,7 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class BranchService extends Model {
     static associate(models) {
-      // define association here if needed
+      BranchService.belongsTo(models.Branch, { foreignKey: 'branchId' });
+      BranchService.belongsTo(models.Service, { foreignKey: 'serviceId' });
     }
   }
   BranchService.init({
