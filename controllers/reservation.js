@@ -22,9 +22,6 @@ class ReservationController {
                 return res.status(400).send('Invalid branch or service');
               }
 
-            if (isNaN(phone) || phone.toString().length < 14) {
-                throw new Error("Invalid phone number");
-            }
 
             await Reservation.create({
                 name,

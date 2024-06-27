@@ -29,7 +29,11 @@ router.get('/admin/service', authentication,authorization, DashboardController.m
 router.get('/admin/branch', authentication,authorization, DashboardController.manageBranch)
 router.get('/admin/branch/add', authentication,authorization, DashboardController.addBranch)
 router.post('/services/create', authentication, authorization, DashboardController.createService)
-router.post('/branch/create', authentication, authorization, DashboardController.createBranch)
+router.post('/branches/create', authentication, authorization, DashboardController.createBranch)
+router.post('/branches/manage', authentication, authorization, DashboardController.manageBranch)
+router.get('/services/all', authentication, authorization, DashboardController.getServices)
+router.get('/branches/:branchId/services', authentication, authorization, DashboardController.getServicesByBranchId)
+router.post('/manage/:branchId/remove-services', authentication, authorization, DashboardController.removeServicesFromBranch);
 
 router.get('/reservation', authentication, ReservationController.show)
 router.post('/reservation/add', authentication, ReservationController.create)
