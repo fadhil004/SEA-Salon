@@ -37,11 +37,6 @@
                 </div>
                 <div class="col-sm-6">
                   <div class="form-group">
-                    <input type="text" class="form-control appointment_time" placeholder="Time" name="time">
-                  </div>
-                </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
                       <div class="select-wrap">
                           <div class="icon"><span class="ion-ios-arrow-down"></span></div>
                           <select name="branchId" id="branch" class="form-control" required>
@@ -66,6 +61,17 @@
                   </div>
                       </div>
                 </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                      <div class="select-wrap">
+                          <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+                          <select name="time" id="time" class="form-control" required>
+                              <option value="" disabled selected>Select Time</option>
+                              <!-- Time options will be populated dynamically -->
+                          </select>
+                      </div>
+                  </div>
+              </div>
                 </div>
                 <div class="form-group">
                 <input type="submit" value="Make an Appointment" class="btn btn-primary">
@@ -80,9 +86,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         const branchSelect = document.getElementById('branch');
         const serviceSelect = document.getElementById('serviceId');
+        const timeSelect = document.getElementById('time');
     
         // Disable service select initially
         serviceSelect.disabled = true;
+        timeSelect.disabled = true;
     
         branchSelect.addEventListener('change', function() {
             const selectedBranchId = branchSelect.value;
@@ -90,6 +98,9 @@
             // Clear previous options
             while (serviceSelect.options.length > 0) {
                 serviceSelect.remove(0);
+            }
+            while (timeSelect.options.length > 0) {
+                timeSelect.remove(0);
             }
     
             if (selectedBranchId) {
@@ -107,8 +118,24 @@
                     .catch(error => {
                         console.error('Error fetching services:', error);
                     });
+                
+                fetch(`/${selectedBranchId}/times`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(time => {
+                            const option = document.createElement('option');
+                            option.value = time;
+                            option.textContent = time;
+                            timeSelect.appendChild(option);
+                        });
+                        timeSelect.disabled = false;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching times:', error);
+                    });
             } else {
                 serviceSelect.disabled = true;
+                timeSelect.disabled = true;
             }
         });
     });

@@ -37,6 +37,7 @@ router.get('/branches/services/remove/:branchId/:serviceId', authentication, aut
 router.get('/reservation', authentication, ReservationController.show)
 router.post('/reservation/add', authentication, ReservationController.create)
 router.get('/:branchId/services', authentication, ReservationController.getServices)
+router.get('/:branchId/times', authentication, ReservationController.getBranchTime)
 
 router.post('/review', ReviewController.create)
 

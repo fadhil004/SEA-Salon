@@ -3,6 +3,11 @@ const { Reservation, Branch, Service, User } = require('../models');
 class ReservationController {
     static async show(req, res){
         try {
+            const decodedId = req.decoded.id;
+                const user = await User.findByPk(decodedId)
+                if (user && user.role === 'admin') {
+                    return res.redirect('/admin');
+                }
             const branches = await Branch.findAll();
             const services = await Service.findAll();
             res.render('reservation', {user: res.locals.user, branches, services });
@@ -57,6 +62,28 @@ class ReservationController {
         } catch (error) {
             console.error('Error fetching services:', error);
             res.status(500).json({ error: 'Failed to fetch services' });
+        }
+    }
+    static async getBranchTime(req, res){
+        try {
+            const branch = await Branch.findByPk(req.params.branchId);
+            if (!branch) {
+                return res.status(404).json({ error: 'Branch not found' });
+            }
+    
+            const openTime = new Date(`1970-01-01T${branch.openingTime}Z`);
+            const closeTime = new Date(`1970-01-01T${branch.closingTime}Z`);
+            const times = [];
+    
+            for (let time = new Date(openTime); time <= closeTime; time.setMinutes(time.getMinutes() + 30)) {
+                const hours = time.getUTCHours().toString().padStart(2, '0');
+                const minutes = time.getUTCMinutes().toString().padStart(2, '0');
+                times.push(`${hours}:${minutes}`);
+            }
+    
+            res.json(times);
+        } catch (err) {
+            res.status(500).json({ error: err.message });
         }
     }
 }
