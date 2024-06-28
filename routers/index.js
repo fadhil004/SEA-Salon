@@ -18,12 +18,19 @@ router.get('/logout', (req, res) => {
     });
 });
 
+router.post('/review', ReviewController.create)
+
 router.get('/register', UserController.registerForm)
 router.get('/login', UserController.loginForm)
 router.post('/register', UserController.create)
 router.post('/login', UserController.login)
 router.get('/dashboard', authentication, UserController.dashboard)
 router.get('/admin', authentication, authorization, UserController.admin)
+
+router.get('/reservation', authentication, ReservationController.show)
+router.post('/reservation/add', authentication, ReservationController.create)
+router.get('/:branchId/services', authentication, ReservationController.getServices)
+router.get('/:branchId/times', authentication, ReservationController.getBranchTime)
 
 router.get('/admin/service', authentication,authorization, DashboardController.manageService)
 router.get('/admin/branch', authentication,authorization, DashboardController.manageBranch)
@@ -32,13 +39,5 @@ router.post('/services/create', authentication, authorization, DashboardControll
 router.post('/branches/create', authentication, authorization, DashboardController.createBranch)
 router.post('/branches/services/add', authentication, authorization, DashboardController.addServiceToBranch)
 router.get('/branches/services/remove/:branchId/:serviceId', authentication, authorization, DashboardController.removeServiceFromBranch)
-
-
-router.get('/reservation', authentication, ReservationController.show)
-router.post('/reservation/add', authentication, ReservationController.create)
-router.get('/:branchId/services', authentication, ReservationController.getServices)
-router.get('/:branchId/times', authentication, ReservationController.getBranchTime)
-
-router.post('/review', ReviewController.create)
 
 module.exports = router

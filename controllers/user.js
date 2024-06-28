@@ -77,14 +77,37 @@
         }
         static async dashboard(req, res) {
             try {
-                const decodedId = req.decoded.id;
-                const user = await User.findByPk(decodedId)
+                const userId = req.decoded.id;
+                const user = await User.findByPk(userId)
                 if (user && user.role === 'admin') {
                     return res.redirect('/admin');
                 }
-                res.render('dashboard', { user: req.decoded });
-            } catch (err) {
-                res.render('error', { error: err.message });//wait for error.ejs
+
+                const reservations = await Reservation.findAll({
+                    where: { userId },
+                    include: [
+                    { model: Branch, attributes: ['name'] },
+                    { model: Service, attributes: ['nameService', 'price'] }
+                    ],
+                    order: [['date', 'DESC']]
+                });
+
+                const totalReservations = await Reservation.count({ where: { userId } });
+                const totalSpend = await Reservation.sum('price', {
+                    include: [
+                    {
+                        model: Service,
+                        attributes: [],
+                        where: { '$Reservation.userId$': userId }
+                    }
+                    ]
+                });
+
+                res.render('dashboard', { layout:false, user: req.decoded, reservations, 
+                    totalReservations, totalSpend
+                 });
+            } catch (error) {
+                res.status(500).send(error.message);
             }
         }
         static async admin(req, res) {
