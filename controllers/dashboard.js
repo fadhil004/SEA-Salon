@@ -5,7 +5,7 @@ class DashboardController{
         try {
             res.render('service', { layout:false, user: req.decoded });
         } catch (err) {
-            res.render('error', { error: err.message });//wait for error.ejs
+            res.status(500).send(err.message);
         }
     }
     static async manageBranch(req, res) {
@@ -28,7 +28,7 @@ class DashboardController{
             const services = await Service.findAll();
             res.render('addBranch', { layout:false, user: req.decoded, services });
         } catch (err) {
-            res.render('error', { error: err.message });//wait for error.ejs
+            res.status(500).send(err.message);
         }
     }
     static async createService(req,res){
@@ -42,9 +42,8 @@ class DashboardController{
             });
       
             res.redirect('/admin'); 
-        } catch (error) {
-            console.error('Error creating service:', error);
-            res.status(500).send('Internal Server Error');
+        } catch (err) {
+            res.status(500).send(err.message);
         }
     }
     static async createBranch(req, res) {
@@ -62,9 +61,8 @@ class DashboardController{
           }
     
           res.redirect('/admin'); 
-        } catch (error) {
-          console.error('Error creating branch:', error);
-          res.status(500).send('Internal Server Error');
+        } catch (err) {
+            res.status(500).send(err.message);
         }
     }
     static async addServiceToBranch(req, res){

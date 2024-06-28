@@ -11,8 +11,8 @@ class ReservationController {
             const branches = await Branch.findAll();
             const services = await Service.findAll();
             res.render('reservation', {user: res.locals.user, branches, services });
-        } catch (error) {
-            res.status(500).send(error.message);
+        } catch (err) {
+            res.status(500).send(err.message);
         }
     }
     static async create(req, res, next){
@@ -59,9 +59,8 @@ class ReservationController {
             }
     
             res.json(branch.services);
-        } catch (error) {
-            console.error('Error fetching services:', error);
-            res.status(500).json({ error: 'Failed to fetch services' });
+        } catch (err) {
+            res.status(500).send(err.message);
         }
     }
     static async getBranchTime(req, res){

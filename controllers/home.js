@@ -10,7 +10,7 @@ class HomeController{
             });
             res.render('index', { reviews, user: res.locals.user });
         } catch (err) {
-            res.render('error', { error: err.message });//wait for error.ejs
+            res.status(500).send(err.message);
         }
     }
     

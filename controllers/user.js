@@ -11,7 +11,7 @@
                 }
                 res.render('register', { layout: false, message: ''});
             } catch (err) {
-                res.render('error', { error: err.message });//wait for error.ejs
+                res.status(500).send(err.message);
             }
         }
         static async loginForm(req, res) {
@@ -21,7 +21,7 @@
                 }
                 res.render('login', { layout: false, message: ''});
             } catch (err) {
-                res.render('error', { error: err.message });//wait for error.ejs
+                res.status(500).send(err.message);
             }
         }
         static async create(req, res, next){
