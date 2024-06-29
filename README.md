@@ -18,7 +18,6 @@ This project is a web-based application for managing reservations and services i
 - **Manage Services:** Add, update, and delete services offered by branches.
 - **Reservation System:** Allow customers to book appointments.
 - **Reviews:** User can make reviews and give star.
-- **User Management:** Admin panel for managing users.
 
 ## Technologies Used
 
